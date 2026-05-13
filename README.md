@@ -1,7 +1,7 @@
 
 ## Network Monitoring & Financial Risk Dashboard (NOC)
 
-Este proyecto simula un **Centro de Operaciones de Red (NOC)** que integra la generación de telemetría en tiempo real con análisis de impacto financiero. Es una solución diseñada para demostrar habilidades en **Ingeniería de Sistemas**, **Gestión de Proyectos** y **Analítica de Datos**.
+Este proyecto simula un **Centro de Operaciones de Red (NOC)** que integra la generación de telemetría en tiempo real con análisis de impacto financiero.
 
 ##  Características Principales
 *   **Backend dinámico:** Script en **Node.js** que genera métricas aleatorias de CPU, latencia y estado de dispositivos.
