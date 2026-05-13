@@ -24,7 +24,9 @@ for (let i = 0; i < 1440; i++) {
             latencia_ms: parseFloat(latencia.toFixed(2)),
             ancho_banda_mbps: parseFloat((Math.random() * 500 * (cpu/100)).toFixed(2)),
             // Clasificación profesional de estado
-            status: (cpu > 90 || latencia > 150) ? "Critical" : (cpu > 75) ? "Warning" : "Healthy"
+            status: (cpu > 90 || latencia > 150) ? "Critical" : (cpu > 75) ? "Warning" : "Healthy",
+            // Nueva métrica de impacto económico
+            costo_riesgo: (cpu > 90) ? parseFloat((Math.random() * 100).toFixed(2)) : 0
         });
     });
 }
