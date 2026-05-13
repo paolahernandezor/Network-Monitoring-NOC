@@ -1,45 +1,35 @@
 const fs = require('fs');
 const logs = [];
-
-// Inventario de nodos para mi laboratorio de pruebas - Proyecto Monitoreo Personal
-const nodosActivos = [
-    { tag: 'GW-HOME-LAB', descripcion: 'Gateway Residencial Principal', critico: true },
-    { tag: 'SRV-DATA-STORAGE', descripcion: 'Servidor de Archivos Local', critico: true },
-    { tag: 'WORKSTATION-01', descripcion: 'Estación de Trabajo - Edición', esCritico: false },
-    { tag: 'NET-EXTENDER', descripcion: 'Repetidor de Señal Exterior', esCritico: false }
+const dispositivos = [
+    { nombre: 'Core-Router', critico: true },
+    { nombre: 'Firewall-Perimeter', critico: true },
+    { nombre: 'Switch-L3-Popayan', critico: false },
+    { nombre: 'Access-Point-Sede1', critico: false }
 ];
 
-// Generando datos de rendimiento para simular una semana de carga (Data Sprints)
-for (let i = 0; i < 2000; i++) {
-    const ahora = new Date();
-    const tiempo = new Date(ahora.getTime() + (i * 60000));
-    const horaActual = tiempo.getHours();
+for (let i = 0; i < 1440; i++) {
+    const tiempo = new Date(new Date().getTime() + (i * 60000));
+    const hora = tiempo.getHours();
 
-    nodosActivos.forEach(item => {
-        // Simulo una carga aleatoria con picos nocturnos (cuando yo usaría el lab)
-        let actividadNocturna = (horaActual >= 19 && horaActual <= 23) ? 2.8 : 0.9;
-        let porcentajeCpu = Math.min(100, (Math.random() * 22 * actividadNocturna) + 8);
-        
-        // Latencia basada en congestión de red simulada
-        let latenciaRed = (porcentajeCpu > 82) ? Math.random() * 150 + 30 : Math.random() * 12 + 4;
+    dispositivos.forEach(d => {
+        // Simulación de carga laboral: pico entre 9am y 11am
+        let factorCarga = (hora >= 9 && hora <= 11) ? 2.5 : 1;
+        let cpu = Math.min(100, (Math.random() * 30 * factorCarga) + 10);
+        let latencia = (cpu > 80) ? Math.random() * 200 + 50 : Math.random() * 20 + 2;
 
         logs.push({
-            instante: tiempo.toISOString(),
-            id_dispositivo: item.tag,
-            nombre_comun: item.descripcion,
-            metrica_cpu: parseFloat(porcentajeCpu.toFixed(2)),
-            ping_ms: parseFloat(latenciaRed.toFixed(2)),
-            consumo_mb: parseFloat((Math.random() * 450 * (porcentajeCpu/100)).toFixed(2)),
-            
-            // Lógica de validación de salud del sistema
-            alerta: (porcentajeCpu > 85 || latenciaRed > 120) ? "Critical" : (porcentajeCpu > 65) ? "Warning" : "Healthy",
-            
-            // Estimación de costo por mantenimiento reactivo
-            valor_riesgo: (porcentajeCpu > 85) ? parseFloat((Math.random() * 125).toFixed(2)) : 0
+            timestamp: tiempo.toISOString(),
+            dispositivo: d.nombre,
+            cpu_usage: parseFloat(cpu.toFixed(2)),
+            latencia_ms: parseFloat(latencia.toFixed(2)),
+            ancho_banda_mbps: parseFloat((Math.random() * 500 * (cpu/100)).toFixed(2)),
+            // Clasificación profesional de estado
+            status: (cpu > 90 || latencia > 150) ? "Critical" : (cpu > 75) ? "Warning" : "Healthy",
+            // Nueva métrica de impacto económico
+            costo_riesgo: (cpu > 90) ? parseFloat((Math.random() * 100).toFixed(2)) : 0
         });
     });
 }
 
-// Guardando el dataset para procesar en Power BI
-fs.writeFileSync('mi_telemetria_red.json', JSON.stringify(logs, null, 2));
-console.log("Dataset generado: mi_telemetria_red.json listo para análisis.");
+fs.writeFileSync('datos_monitoreo_red_v2.json', JSON.stringify(logs, null, 2));
+console.log(" Dataset robusto generado: logs de correlación y estados .");
